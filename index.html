@@ -233,66 +233,61 @@
 
         /* =============================================
            FEEDBACK POPUPS — goed en fout
-           Stijl: grote afgeronde kaart onderaan scherm
+           Stijl: gecentreerde kaart midden in scherm
         ============================================= */
         .feedback-overlay {
             position: fixed;
             inset: 0;
+            background: rgba(0,0,0,0.35);
             display: flex;
-            align-items: flex-end;         /* onderin het scherm */
+            align-items: center;
             justify-content: center;
             z-index: 999;
             padding: 20px;
-            pointer-events: none;          /* overlay zelf klikbaar door */
+            animation: fadeIn 0.15s ease;
         }
 
         .feedback-popup {
-            width: 100%;
-            max-width: 900px;
-            border-radius: 22px;
-            padding: 28px 36px;
+            width: 320px;
+            border-radius: 28px;
+            padding: 44px 36px 38px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 24px;
-            pointer-events: all;
-            animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 -4px 40px rgba(0,0,0,0.15);
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(120px); opacity: 0; }
-            to   { transform: translateY(0);     opacity: 1; }
+            animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            text-align: center;
         }
 
         .feedback-popup.goed { background: #4caf7d; }
         .feedback-popup.fout { background: #e86060; }
 
         .feedback-cirkel {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.9);
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            font-size: 30px;
+            font-size: 38px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
         }
 
         .feedback-tekst {
             font-family: 'Fredoka', sans-serif;
-            font-size: 28px;
+            font-size: 34px;
             font-weight: 700;
             color: white;
-            flex: 1;
         }
 
         .feedback-sub {
             font-family: 'Nunito', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: rgba(255,255,255,0.85);
-            margin-top: 4px;
+            margin-top: 8px;
         }
 
         /* =============================================
@@ -499,8 +494,8 @@
             .content-card { padding: 26px 20px; }
             .card-title { font-size: 23px; }
             .final-buttons { grid-template-columns: 1fr; }
-            .feedback-popup { padding: 22px 24px; gap: 16px; }
-            .feedback-tekst { font-size: 22px; }
+            .feedback-popup { width: 280px; padding: 36px 28px 30px; }
+            .feedback-tekst { font-size: 26px; }
         }
 
         @media (max-width: 480px) {
@@ -508,7 +503,7 @@
             .text-input { font-size: 19px; }
             .button-row { grid-template-columns: 1fr; }
             .score-info { gap: 10px; }
-            .feedback-cirkel { width: 50px; height: 50px; font-size: 24px; }
+            .feedback-cirkel { width: 66px; height: 66px; font-size: 32px; }
         }
 
         /* iPad landscape */
@@ -523,7 +518,7 @@
             .card-subtitle { font-size: 14px; margin-bottom: 16px; }
             .text-input { padding: 14px 22px; margin-bottom: 14px; }
             .score-bar { padding: 10px 20px; margin-bottom: 14px; }
-            .feedback-popup { padding: 20px 30px; }
+            .feedback-popup { width: 260px; padding: 32px 24px 26px; }
         }
     </style>
 </head>
@@ -531,7 +526,7 @@
 <div class="container">
 
     <!-- Terug link -->
-    <a href="https://bertmarinus.github.io/learnforge/spelling-index.html" class="back-link">← Terug naar overzicht</a>
+    <a href="https://bertmarinus.github.io/learnforge/spelling-index.html"  class="back-link">← Terug naar overzicht</a>
 
     <!-- Score balk -->
     <div class="score-bar">
@@ -588,7 +583,7 @@
         <div class="eind-bericht" id="eindBericht"></div>
         <div class="final-buttons">
             <button class="btn-secondary" onclick="herstart()">🔁 Opnieuw</button>
-            <a href="https://bertmarinus.github.io/learnforge/spelling-index.html" class="btn-success">← Terug naar overzicht</a>
+            <a href="https://bertmarinus.github.io/learnforge/spelling-index.html"  class="btn-success">← Terug naar overzicht</a>
         </div>
     </div>
 
@@ -598,10 +593,8 @@
 <div class="feedback-overlay hidden" id="feedbackGoed">
     <div class="feedback-popup goed">
         <div class="feedback-cirkel">✔</div>
-        <div>
-            <div class="feedback-tekst">Goed zo! 🎉</div>
-            <div class="feedback-sub" id="feedbackGoedSub"></div>
-        </div>
+        <div class="feedback-tekst">Goed zo! 🎉</div>
+        <div class="feedback-sub" id="feedbackGoedSub"></div>
     </div>
 </div>
 
@@ -609,10 +602,8 @@
 <div class="feedback-overlay hidden" id="feedbackFout">
     <div class="feedback-popup fout">
         <div class="feedback-cirkel">✕</div>
-        <div>
-            <div class="feedback-tekst">Helaas!</div>
-            <div class="feedback-sub" id="feedbackFoutSub"></div>
-        </div>
+        <div class="feedback-tekst">Helaas!</div>
+        <div class="feedback-sub" id="feedbackFoutSub"></div>
     </div>
 </div>
 
