@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Persoonsvorm - LearnForge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #48bb78;
+            --card-bg: #ffffff;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --success: #48bb78;
+            --error: #f56565;
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 50%, #dbeafe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* TERUG LINK */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* SCORE BALK */
+        .score-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            padding: 14px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .score-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .score-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 19px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .score-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .score-dot.goed { background: var(--success); }
+        .score-dot.fout { background: var(--error); }
+
+        .score-teller {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--primary);
+            background: #e0e7ff;
+            padding: 6px 18px;
+            border-radius: 20px;
+        }
+
+        .reset-btn {
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .reset-btn:hover { border-color: var(--error); color: var(--error); }
+
+        /* VRAAGKAART */
+        .question-card {
+            background: var(--primary);
+            border-radius: 24px;
+            padding: 36px 44px;
+            margin-bottom: 22px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .question-label {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            margin-bottom: 14px;
+        }
+
+        .question-sentence {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* CONTENT KAART */
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 38px 44px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-icon {
+            width: 68px; height: 68px;
+            border-radius: 18px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin: 0 auto 18px;
+        }
+
+        .card-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .card-subtitle {
+            color: var(--text-light);
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* INVOER */
+        .text-input {
+            width: 100%;
+            padding: 18px 22px;
+            border: 3px solid var(--border);
+            border-radius: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-dark);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
+        }
+
+        .text-input::placeholder { color: #cbd5e0; }
+
+        /* KNOPPEN */
+        .button-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 14px;
+        }
+
+        .btn-check {
+            padding: 16px 24px;
+            background: var(--primary);
+            border: none;
+            border-radius: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-hint {
+            padding: 16px 24px;
+            background: #fef3c7;
+            border: 2px solid #f6d860;
+            border-radius: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #92400e;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-hint:hover {
+            background: #fde68a;
+            transform: translateY(-2px);
+        }
+
+        /* =============================================
+           FEEDBACK POPUPS — goed en fout
+           Stijl: grote afgeronde kaart onderaan scherm
+        ============================================= */
+        .feedback-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: flex-end;         /* onderin het scherm */
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+            pointer-events: none;          /* overlay zelf klikbaar door */
+        }
+
+        .feedback-popup {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 22px;
+            padding: 28px 36px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            pointer-events: all;
+            animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 -4px 40px rgba(0,0,0,0.15);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(120px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+
+        .feedback-popup.goed { background: #4caf7d; }
+        .feedback-popup.fout { background: #e86060; }
+
+        .feedback-cirkel {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 30px;
+        }
+
+        .feedback-tekst {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            flex: 1;
+        }
+
+        .feedback-sub {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            margin-top: 4px;
+        }
+
+        /* =============================================
+           HINT MODAL
+        ============================================= */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        .modal-content {
+            background: white;
+            border-radius: 22px;
+            padding: 32px 40px;
+            max-width: 420px;
+            width: 92%;
+            text-align: left;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        @keyframes popIn {
+            from { opacity:0; transform:scale(0.85); }
+            to   { opacity:1; transform:scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon-circle {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .modal-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .hint-antwoord {
+            background: #e0e7ff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 19px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .hint-antwoord-woord {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .hint-subtext {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .hint-tips { list-style: none; padding: 0; }
+
+        .hint-tips li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 9px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border);
+            line-height: 1.5;
+        }
+
+        .hint-tips li:last-child { border-bottom: none; }
+
+        .hint-tips li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 1.1;
+            flex-shrink: 0;
+        }
+
+        .modal-footer { margin-top: 22px; text-align: right; }
+
+        .btn-ok {
+            padding: 12px 32px;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(102,126,234,0.35);
+        }
+
+        .btn-ok:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.45);
+        }
+
+        /* EINDSCHERM */
+        .eindscherm { display: none; text-align: center; }
+
+        .eind-score {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+
+        .eind-label  { color: var(--text-light); font-size: 18px; margin-bottom: 12px; }
+        .eind-bericht { font-size: 18px; color: var(--text-dark); margin-bottom: 30px; }
+
+        .final-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .btn-secondary {
+            padding: 15px 20px;
+            border: 3px solid var(--border);
+            background: white;
+            border-radius: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-secondary:hover { border-color: var(--text-light); background: #f7fafc; }
+
+        .btn-success {
+            padding: 15px 20px;
+            background: var(--secondary);
+            border: none;
+            border-radius: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(72,187,120,0.3);
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72,187,120,0.4);
+        }
+
+        .hidden { display: none !important; }
+
+        /* =============================================
+           RESPONSIVE
+        ============================================= */
+        @media (max-width: 900px) {
+            .content-card { padding: 32px 30px; }
+            .question-card { padding: 28px 30px; }
+            .question-sentence { font-size: 26px; }
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 14px; }
+            .question-card { padding: 24px 20px; }
+            .question-sentence { font-size: 22px; }
+            .content-card { padding: 26px 20px; }
+            .card-title { font-size: 23px; }
+            .final-buttons { grid-template-columns: 1fr; }
+            .feedback-popup { padding: 22px 24px; gap: 16px; }
+            .feedback-tekst { font-size: 22px; }
+        }
+
+        @media (max-width: 480px) {
+            .question-sentence { font-size: 19px; }
+            .text-input { font-size: 19px; }
+            .button-row { grid-template-columns: 1fr; }
+            .score-info { gap: 10px; }
+            .feedback-cirkel { width: 50px; height: 50px; font-size: 24px; }
+        }
+
+        /* iPad landscape */
+        @media (orientation: landscape) and (max-height: 768px) {
+            body { padding: 12px; }
+            .question-card { padding: 18px 40px; margin-bottom: 14px; }
+            .question-label { margin-bottom: 8px; }
+            .question-sentence { font-size: 26px; }
+            .content-card { padding: 22px 40px; }
+            .card-icon { width: 52px; height: 52px; font-size: 26px; margin-bottom: 12px; }
+            .card-title { font-size: 22px; margin-bottom: 4px; }
+            .card-subtitle { font-size: 14px; margin-bottom: 16px; }
+            .text-input { padding: 14px 22px; margin-bottom: 14px; }
+            .score-bar { padding: 10px 20px; margin-bottom: 14px; }
+            .feedback-popup { padding: 20px 30px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Terug link -->
+    <a href="https://bertmarinus.github.io/learnforge/spelling-index.html" class="back-link">← Terug naar overzicht</a>
+
+    <!-- Score balk -->
+    <div class="score-bar">
+        <div class="score-info">
+            <div class="score-chip">
+                <div class="score-dot goed"></div>
+                Goed: <strong id="aantalGoed">0</strong>
+            </div>
+            <div class="score-chip">
+                <div class="score-dot fout"></div>
+                Fout: <strong id="aantalFout">0</strong>
+            </div>
+            <div class="score-teller" id="scoreTeller">0 / 0</div>
+        </div>
+        <button class="reset-btn" onclick="resetScore()">↺ Reset score</button>
+    </div>
+
+    <!-- Vraagkaart -->
+    <div class="question-card" id="questionCard">
+        <div class="question-label">Zoek de persoonsvorm</div>
+        <div class="question-sentence" id="questionSentence">…</div>
+    </div>
+
+    <!-- Oefening kaart -->
+    <div class="content-card" id="oefeningCard">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Wat is de persoonsvorm?</div>
+        <div class="card-subtitle">Typ de persoonsvorm en druk op Enter of Controleer.</div>
+
+        <input
+            type="text"
+            class="text-input"
+            id="antwoordInput"
+            placeholder="typ hier…"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            inputmode="text"
+        >
+
+        <div class="button-row">
+            <button class="btn-check" id="checkBtn" onclick="controleer()">✓ Controleer</button>
+            <button class="btn-hint"  onclick="showHint()">💡 Hint</button>
+        </div>
+    </div>
+
+    <!-- Eindscherm -->
+    <div class="content-card eindscherm" id="eindscherm">
+        <div class="card-icon" style="background:#d1fae5;">🏆</div>
+        <div class="card-title">Alle zinnen gehad!</div>
+        <div class="eind-score" id="eindScore">0/0</div>
+        <div class="eind-label">goed / totaal geprobeerd</div>
+        <div class="eind-bericht" id="eindBericht"></div>
+        <div class="final-buttons">
+            <button class="btn-secondary" onclick="herstart()">🔁 Opnieuw</button>
+            <a href="https://bertmarinus.github.io/learnforge/spelling-index.html" class="btn-success">← Terug naar overzicht</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- FEEDBACK POPUP: GOED -->
+<div class="feedback-overlay hidden" id="feedbackGoed">
+    <div class="feedback-popup goed">
+        <div class="feedback-cirkel">✔</div>
+        <div>
+            <div class="feedback-tekst">Goed zo! 🎉</div>
+            <div class="feedback-sub" id="feedbackGoedSub"></div>
+        </div>
+    </div>
+</div>
+
+<!-- FEEDBACK POPUP: FOUT -->
+<div class="feedback-overlay hidden" id="feedbackFout">
+    <div class="feedback-popup fout">
+        <div class="feedback-cirkel">✕</div>
+        <div>
+            <div class="feedback-tekst">Helaas!</div>
+            <div class="feedback-sub" id="feedbackFoutSub"></div>
+        </div>
+    </div>
+</div>
+
+<!-- HINT MODAL -->
+<div class="modal-overlay hidden" id="modalHint">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-icon-circle">💡</div>
+            <div class="modal-title">Hint</div>
+        </div>
+
+        <div class="hint-antwoord">
+            De persoonsvorm is: <span class="hint-antwoord-woord" id="hintAntwoord">…</span>
+        </div>
+
+        <div class="hint-subtext">Hoe vind ik de persoonsvorm?</div>
+        <ul class="hint-tips">
+            <li>Zet de zin in een andere tijd</li>
+            <li>Maak er een vraagzin van</li>
+        </ul>
+
+        <div class="modal-footer">
+            <button class="btn-ok" onclick="sluitHint()">OK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // DATA
+    // ============================================================
+    const oefeningen = [
+        { zin: "Hij zoekt een stoel om even op te rusten.", pv: "zoekt" },
+        { zin: "De kinderen spelen buiten in de tuin.", pv: "spelen" },
+        { zin: "Mijn zus leest elke avond een boek.", pv: "leest" },
+        { zin: "Gisteren bakte oma een appeltaart.", pv: "bakte" },
+        { zin: "De leraar schrijft de opdracht op het bord.", pv: "schrijft" },
+        { zin: "Wij fietsen elke dag naar school.", pv: "fietsen" },
+        { zin: "De hond blafte de hele nacht.", pv: "blafte" },
+        { zin: "Jullie lopen elke ochtend door het park.", pv: "lopen" },
+        { zin: "Het vliegtuig landt over een uur op Schiphol.", pv: "landt" },
+        { zin: "De klas zong een liedje voor de directeur.", pv: "zong" },
+        { zin: "Jij vergeet altijd je huiswerk mee te nemen.", pv: "vergeet" },
+        { zin: "Mijn broer werkt 's avonds in een supermarkt.", pv: "werkt" },
+        { zin: "De baby sliep de hele middag rustig.", pv: "sliep" },
+        { zin: "De meisjes zongen een mooi lied.", pv: "zongen" },
+        { zin: "Mijn vader kookt elke avond voor het gezin.", pv: "kookt" },
+        { zin: "De trein reed gisteren te laat.", pv: "reed" },
+        { zin: "Wij hopen op mooi weer dit weekend.", pv: "hopen" },
+        { zin: "Het kind tekende een prachtig schilderij.", pv: "tekende" },
+    ];
+
+    let huidigIndex = 0;
+    let aantalGoed  = 0;
+    let aantalFout  = 0;
+    let bezig       = false;
+    let feedbackTimer = null;
+
+    // ============================================================
+    // LAAD OEFENING
+    // ============================================================
+    function laadOefening(index) {
+        if (index >= oefeningen.length) { toonEindscherm(); return; }
+        document.getElementById('questionSentence').textContent = oefeningen[index].zin;
+        const inp = document.getElementById('antwoordInput');
+        inp.value = '';
+        inp.disabled = false;
+        inp.focus();
+        bezig = false;
+    }
+
+    // ============================================================
+    // SCORE
+    // ============================================================
+    function updateScore() {
+        document.getElementById('aantalGoed').textContent = aantalGoed;
+        document.getElementById('aantalFout').textContent = aantalFout;
+        document.getElementById('scoreTeller').textContent =
+            aantalGoed + ' / ' + (aantalGoed + aantalFout);
+    }
+
+    function resetScore() {
+        aantalGoed = aantalFout = huidigIndex = 0;
+        updateScore();
+        sluitAlleFeedback();
+        document.getElementById('oefeningCard').style.display = 'block';
+        document.getElementById('questionCard').style.display = 'block';
+        document.getElementById('eindscherm').style.display   = 'none';
+        laadOefening(0);
+    }
+
+    // ============================================================
+    // CONTROLEER
+    // ============================================================
+    function controleer() {
+        if (bezig) return;
+        if (!document.getElementById('modalHint').classList.contains('hidden')) return;
+
+        const inp    = document.getElementById('antwoordInput');
+        const invoer = inp.value.trim().toLowerCase();
+        const juist  = oefeningen[huidigIndex].pv.toLowerCase();
+        if (!invoer) return;
+
+        bezig = true;
+        inp.disabled = true;
+
+        if (invoer === juist) {
+            aantalGoed++;
+            updateScore();
+            toonFeedback('goed', '"' + oefeningen[huidigIndex].pv + '" is correct!', 1400);
+        } else {
+            aantalFout++;
+            updateScore();
+            toonFeedback('fout', 'Het antwoord is: ' + oefeningen[huidigIndex].pv, 2000);
+        }
+    }
+
+    // ============================================================
+    // FEEDBACK POPUP
+    // ============================================================
+    function toonFeedback(type, subtekst, duur) {
+        sluitAlleFeedback();
+
+        if (type === 'goed') {
+            document.getElementById('feedbackGoedSub').textContent = subtekst;
+            document.getElementById('feedbackGoed').classList.remove('hidden');
+        } else {
+            document.getElementById('feedbackFoutSub').textContent = subtekst;
+            document.getElementById('feedbackFout').classList.remove('hidden');
+        }
+
+        feedbackTimer = setTimeout(() => {
+            sluitAlleFeedback();
+            huidigIndex++;
+            laadOefening(huidigIndex);
+        }, duur);
+    }
+
+    function sluitAlleFeedback() {
+        document.getElementById('feedbackGoed').classList.add('hidden');
+        document.getElementById('feedbackFout').classList.add('hidden');
+        if (feedbackTimer) { clearTimeout(feedbackTimer); feedbackTimer = null; }
+    }
+
+    // ============================================================
+    // HINT
+    // ============================================================
+    function showHint() {
+        document.getElementById('hintAntwoord').textContent = oefeningen[huidigIndex].pv;
+        document.getElementById('modalHint').classList.remove('hidden');
+    }
+
+    function sluitHint() {
+        document.getElementById('modalHint').classList.add('hidden');
+        if (!bezig) document.getElementById('antwoordInput').focus();
+    }
+
+    // ============================================================
+    // EINDSCHERM
+    // ============================================================
+    function toonEindscherm() {
+        document.getElementById('oefeningCard').style.display = 'none';
+        document.getElementById('questionCard').style.display = 'none';
+        document.getElementById('eindscherm').style.display   = 'block';
+        const totaal = aantalGoed + aantalFout;
+        document.getElementById('eindScore').textContent = aantalGoed + ' / ' + totaal;
+        const r = totaal > 0 ? aantalGoed / totaal : 0;
+        document.getElementById('eindBericht').textContent =
+            r === 1   ? '🌟 Fantastisch! Alles goed!' :
+            r >= 0.75 ? '👍 Goed gedaan! Blijf oefenen!' :
+            r >= 0.5  ? '🙂 Aardig werk, oefen nog wat meer.' :
+                        '💪 Blijf oefenen, het lukt je!';
+    }
+
+    function herstart() {
+        aantalGoed = aantalFout = huidigIndex = 0;
+        updateScore();
+        document.getElementById('oefeningCard').style.display = 'block';
+        document.getElementById('questionCard').style.display = 'block';
+        document.getElementById('eindscherm').style.display   = 'none';
+        laadOefening(0);
+    }
+
+    // ============================================================
+    // ENTER
+    // ============================================================
+    document.getElementById('antwoordInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') controleer();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            if (!document.getElementById('modalHint').classList.contains('hidden')) {
+                sluitHint();
+            }
+        }
+    });
+
+    // ============================================================
+    // START
+    // ============================================================
+    laadOefening(0);
+    updateScore();
+</script>
+</body>
+</html>
