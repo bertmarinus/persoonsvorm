@@ -552,13 +552,13 @@
             placeholder="typ hier…"
             autocomplete="off"
             autocorrect="off"
-            autocapitalize="off"
+            autocapitalize="none"
             spellcheck="false"
-            inputmode="text"
+            enterkeyhint="done"
         >
 
         <div class="button-row">
-            <button class="btn-hint"  onclick="showHint()">💡 Hint</button>
+            <button class="btn-hint" id="hintBtn" onclick="showHint()">💡 Hint</button>
             <button class="btn-check" id="checkBtn" onclick="controleer()">✓ Controleer</button>
         </div>
     </div>
@@ -623,61 +623,62 @@
     // ============================================================
     // Alle 200 oefeningen — worden bij elke start willekeurig geschud
     const alleOefeningen = [
-        // PV op positie 2 (tweede woord)
+
+        // === POSITIE 2: PV is het tweede woord ===
         { zin: "Hij loopt elke dag naar de bakker.", pv: "loopt" },
         { zin: "Zij zingt een liedje onder de douche.", pv: "zingt" },
         { zin: "Wij eten vanavond bij oma thuis.", pv: "eten" },
         { zin: "Jij fietst veel te snel door de straat.", pv: "fietst" },
-        { zin: "Het regent al de hele ochtend.", pv: "regent" },
         { zin: "Hij sliep gisteren tot tien uur.", pv: "sliep" },
         { zin: "Zij bakte een heerlijke appeltaart.", pv: "bakte" },
-        { zin: "Wij zwommen gisteren in het meer.", pv: "zwommen" },
         { zin: "Hij werkt elke avond tot laat.", pv: "werkt" },
         { zin: "Zij leest graag dikke boeken.", pv: "leest" },
-        { zin: "Wij reden met de trein naar Amsterdam.", pv: "reden" },
         { zin: "Jij tekende een prachtig portret.", pv: "tekende" },
-        { zin: "Hij sprong over de sloot.", pv: "sprong" },
-        { zin: "Zij danste de hele avond.", pv: "danste" },
-        { zin: "Wij lachten om zijn grappige verhaal.", pv: "lachten" },
+        { zin: "Hij sprong over de brede sloot.", pv: "sprong" },
+        { zin: "Zij danste de hele avond door.", pv: "danste" },
         { zin: "Hij schrijft elke dag in zijn dagboek.", pv: "schrijft" },
         { zin: "Zij kookt elke avond voor haar gezin.", pv: "kookt" },
-        { zin: "Wij spelen elke vrijdag voetbal.", pv: "spelen" },
-        { zin: "Jij vergeet altijd je sleutels.", pv: "vergeet" },
+        { zin: "Jij vergeet altijd je sleutels thuis.", pv: "vergeet" },
         { zin: "Hij dronk een groot glas water.", pv: "dronk" },
         { zin: "Zij reed met haar fiets naar school.", pv: "reed" },
-        { zin: "Wij wandelden door het bos.", pv: "wandelden" },
         { zin: "Hij vond een munt op straat.", pv: "vond" },
         { zin: "Zij schilderde een mooi landschap.", pv: "schilderde" },
-        { zin: "Wij keken naar een spannende film.", pv: "keken" },
         { zin: "Hij belde zijn moeder elke zondag.", pv: "belde" },
         { zin: "Zij kocht een nieuwe jas in de stad.", pv: "kocht" },
-        { zin: "Wij hoorden een hard geluid buiten.", pv: "hoorden" },
         { zin: "Hij viel van zijn fiets op de brug.", pv: "viel" },
         { zin: "Zij stuurde een kaartje naar haar oma.", pv: "stuurde" },
-        { zin: "Wij brachten een cadeautje mee.", pv: "brachten" },
         { zin: "Hij ving een vlinder in de tuin.", pv: "ving" },
         { zin: "Zij droeg een rode tas op haar rug.", pv: "droeg" },
-        { zin: "Wij wonnen de wedstrijd met vijf punten.", pv: "wonnen" },
         { zin: "Hij las een spannend detektiveverhaal.", pv: "las" },
-        { zin: "Zij zong het hoogste lied op het podium.", pv: "zong" },
-        { zin: "Wij bouwden een hut in het bos.", pv: "bouwden" },
+        { zin: "Zij zong het hoogste lied van de avond.", pv: "zong" },
         { zin: "Hij gooide de bal over het hek.", pv: "gooide" },
         { zin: "Zij plukte bloemen in de wei.", pv: "plukte" },
-        { zin: "Wij sliepen in een tent op de camping.", pv: "sliepen" },
         { zin: "Hij zocht zijn jas overal in huis.", pv: "zocht" },
         { zin: "Zij wachtte lang op de bus.", pv: "wachtte" },
-        { zin: "Wij zongen samen een oud liedje.", pv: "zongen" },
         { zin: "Hij rende zo snel hij kon.", pv: "rende" },
-        { zin: "Zij bood haar stoel aan de oude man.", pv: "bood" },
-        { zin: "Wij dronken thee bij het open vuur.", pv: "dronken" },
-        { zin: "Hij sneed het brood in dunne plakjes.", pv: "sneed" },
         { zin: "Zij stapte voorzichtig over de plassen.", pv: "stapte" },
-        { zin: "Wij pakten onze koffers voor de vakantie.", pv: "pakten" },
         { zin: "Hij hield de deur open voor zijn oma.", pv: "hield" },
+        { zin: "Zij fluisterde een geheim in zijn oor.", pv: "fluisterde" },
+        { zin: "Hij klom in de grote kastanjeboom.", pv: "klom" },
+        { zin: "Zij verloor haar portemonnee in de trein.", pv: "verloor" },
+        { zin: "Hij sneed het brood in dunne plakjes.", pv: "sneed" },
+        { zin: "Zij bood haar stoel aan de oude man.", pv: "bood" },
+        { zin: "Hij dook van de hoogste springplank.", pv: "dook" },
+        { zin: "Zij naaide een jurk voor het schoolfeest.", pv: "naaide" },
+        { zin: "Hij at de boterham in twee happen op.", pv: "at" },
+        { zin: "Zij breide een warme trui voor de winter.", pv: "breide" },
+        { zin: "Hij galoppeerde over het natte weiland.", pv: "galoppeerde" },
+        { zin: "Zij klapte heel hard na het optreden.", pv: "klapte" },
+        { zin: "Hij smolt van de warmte in de auto.", pv: "smolt" },
+        { zin: "Zij landde het vliegtuig heel soepel.", pv: "landde" },
+        { zin: "Hij wreef zijn handen warm bij het vuur.", pv: "wreef" },
+        { zin: "Zij graasde rustig op het groene veld.", pv: "graasde" },
+        { zin: "Hij sloop voorzichtig door het hoge gras.", pv: "sloop" },
+        { zin: "Zij schreef een lang gedicht over de zee.", pv: "schreef" },
 
-        // PV op positie 3 (derde woord)
+        // === POSITIE 3: PV is het derde woord ===
         { zin: "De hond blafte de hele nacht.", pv: "blafte" },
-        { zin: "De leraar schrijft de opdracht op.", pv: "schrijft" },
+        { zin: "De leraar schrijft de opdracht op het bord.", pv: "schrijft" },
         { zin: "De kinderen spelen buiten in de tuin.", pv: "spelen" },
         { zin: "Mijn zus leest elke avond een boek.", pv: "leest" },
         { zin: "De trein reed gisteren veel te laat.", pv: "reed" },
@@ -691,146 +692,146 @@
         { zin: "De kat sprong op de vensterbank.", pv: "sprong" },
         { zin: "Mijn oma bakt altijd heerlijke koekjes.", pv: "bakt" },
         { zin: "De jongen vond een portemonnee op straat.", pv: "vond" },
-        { zin: "Het meisje danste op het podium.", pv: "danste" },
-        { zin: "De politie zocht de verdachte in de buurt.", pv: "zocht" },
+        { zin: "Het meisje danste op het grote podium.", pv: "danste" },
         { zin: "Mijn neef rijdt elke dag naar zijn werk.", pv: "rijdt" },
         { zin: "De vogels zongen vroeg in de ochtend.", pv: "zongen" },
         { zin: "Het paard liep rustig over het veld.", pv: "liep" },
-        { zin: "De man dronk een kopje koffie.", pv: "dronk" },
+        { zin: "De man dronk een kopje sterke koffie.", pv: "dronk" },
         { zin: "Mijn zus rende snel naar de bushalte.", pv: "rende" },
-        { zin: "De school sloot vroeg door de sneeuw.", pv: "sloot" },
-        { zin: "Het publiek klapte heel hard.", pv: "klapte" },
+        { zin: "Het publiek klapte heel erg hard.", pv: "klapte" },
         { zin: "De kok sneed de groenten heel fijn.", pv: "sneed" },
         { zin: "Mijn vriend stuurde een grappig berichtje.", pv: "stuurde" },
         { zin: "De dokter luisterde aandachtig naar de patiënt.", pv: "luisterde" },
         { zin: "Het team verloor de wedstrijd met twee punten.", pv: "verloor" },
-        { zin: "De leerling beantwoordde alle vragen goed.", pv: "beantwoordde" },
         { zin: "Mijn tante werkte vroeger als verpleegkundige.", pv: "werkte" },
         { zin: "De directeur sprak de leerlingen toe.", pv: "sprak" },
         { zin: "Het kind huilde om zijn kapotte speelgoed.", pv: "huilde" },
-        { zin: "De fietsers reden langs het kanaal.", pv: "reden" },
         { zin: "Mijn broer ving een grote vis.", pv: "ving" },
         { zin: "De burgemeester opende het nieuwe gebouw.", pv: "opende" },
         { zin: "Het meisje gooide de bal heel ver.", pv: "gooide" },
-        { zin: "De winkel sloot al om vijf uur.", pv: "sloot" },
-        { zin: "Mijn moeder kocht nieuwe gordijnen.", pv: "kocht" },
-        { zin: "De hond sleep lekker voor de haard.", pv: "sliep" },
-        { zin: "Het water stroomde door de goot.", pv: "stroomde" },
+        { zin: "Mijn moeder kocht nieuwe gordijnen voor de woonkamer.", pv: "kocht" },
+        { zin: "Het water stroomde door de smalle goot.", pv: "stroomde" },
         { zin: "De lerares vertelde een spannend verhaal.", pv: "vertelde" },
         { zin: "Mijn vader fietste vroeger naar zijn werk.", pv: "fietste" },
         { zin: "De spelers vierden hun overwinning uitbundig.", pv: "vierden" },
-        { zin: "Het publiek stond op voor de artiest.", pv: "stond" },
-        { zin: "De kinderen bouwden een sneeuwpop.", pv: "bouwden" },
+        { zin: "De kinderen bouwden een grote sneeuwpop.", pv: "bouwden" },
         { zin: "Mijn zusje schilderde haar kamer geel.", pv: "schilderde" },
         { zin: "De chauffeur stopte voor het rode stoplicht.", pv: "stopte" },
-        { zin: "Het boek vertelt over een avontuurlijke reis.", pv: "vertelt" },
-        { zin: "De soldaten marcheerden door de stad.", pv: "marcheerden" },
-        { zin: "Mijn opa vertelde graag over vroeger.", pv: "vertelde" },
+        { zin: "De soldaten marcheerden door de drukke stad.", pv: "marcheerden" },
+        { zin: "Mijn opa vertelde graag over zijn jeugd.", pv: "vertelde" },
+        { zin: "De postbode bracht elke dag veel brieven.", pv: "bracht" },
+        { zin: "De bakker bakt elke ochtend vers brood.", pv: "bakt" },
+        { zin: "De schilder verfde de muren lichtblauw.", pv: "verfde" },
+        { zin: "De zwemmer dook van de hoogste plank.", pv: "dook" },
+        { zin: "De timmerman bouwde een mooie houten kast.", pv: "bouwde" },
+        { zin: "De muzikant speelde een mooi stuk op piano.", pv: "speelde" },
+        { zin: "De tuinman plantte rozen langs het pad.", pv: "plantte" },
+        { zin: "De fotograaf maakte een prachtige trouwfoto.", pv: "maakte" },
 
-        // PV op positie 4 (vierde woord)
+        // === POSITIE 4: PV is het vierde woord ===
         { zin: "Gisteren bakte oma een heerlijke taart.", pv: "bakte" },
-        { zin: "Elke dag fietst Jan naar zijn werk.", pv: "fietst" },
-        { zin: "In de zomer zwemmen wij in de zee.", pv: "zwemmen" },
         { zin: "Vroeger woonde opa in een klein dorp.", pv: "woonde" },
-        { zin: "Elke avond leest mama een verhaaltje voor.", pv: "leest" },
         { zin: "Gisteren speelde het team zijn beste wedstrijd.", pv: "speelde" },
-        { zin: "Iedere ochtend loopt zij een rondje door het park.", pv: "loopt" },
-        { zin: "Elke zomer gaan wij naar de camping.", pv: "gaan" },
-        { zin: "In de winter rijden kinderen op de schaats.", pv: "rijden" },
-        { zin: "Gisteren vond hij een portemonnee op straat.", pv: "vond" },
-        { zin: "Elke week schrijft zij een brief aan haar pen pal.", pv: "schrijft" },
         { zin: "Vorig jaar won ons team de competitie.", pv: "won" },
-        { zin: "Elke dag eet hij een boterham met kaas.", pv: "eet" },
-        { zin: "Gisteren zong zij het mooiste lied van de avond.", pv: "zong" },
-        { zin: "In de klas lacht iedereen om zijn grap.", pv: "lacht" },
-        { zin: "Elke nacht droomt hij over een verre reis.", pv: "droomt" },
+        { zin: "Gisteren zong zij het mooiste lied.", pv: "zong" },
         { zin: "Vroeger speelde zij viool in het orkest.", pv: "speelde" },
         { zin: "Gisteren belde hij zijn oude vriend op.", pv: "belde" },
-        { zin: "Elke zaterdag helpt zij haar buurvrouw.", pv: "helpt" },
-        { zin: "In de pauze eten de leerlingen een appel.", pv: "eten" },
-        { zin: "Elke zondag kookt hij een uitgebreid ontbijt.", pv: "kookt" },
         { zin: "Gisteren verloor het elftal met drie punten.", pv: "verloor" },
         { zin: "Vroeger reed opa altijd op een motor.", pv: "reed" },
-        { zin: "Elke week bezoekt zij haar zieke tante.", pv: "bezoekt" },
-        { zin: "In de tuin groeit een grote appelboom.", pv: "groeit" },
-        { zin: "Elke dag oefent hij op zijn gitaar.", pv: "oefent" },
-        { zin: "Gisteren stuurde zij tien berichten naar haar vriendin.", pv: "stuurde" },
+        { zin: "Gisteren stuurde zij tien appjes naar haar vriendin.", pv: "stuurde" },
         { zin: "Vroeger werkte opa op de boerderij.", pv: "werkte" },
-        { zin: "Elke morgen zingt zij onder de douche.", pv: "zingt" },
-        { zin: "In het bos verdwalen wandelaars soms.", pv: "verdwalen" },
-        { zin: "Elke dag drinkt hij drie koppen koffie.", pv: "drinkt" },
         { zin: "Gisteren las zij een heel dik boek uit.", pv: "las" },
         { zin: "Vroeger bouwde opa zijn eigen meubels.", pv: "bouwde" },
-        { zin: "In de supermarkt werkte zij altijd graag.", pv: "werkte" },
-        { zin: "Elke dag tekent hij iets nieuws in zijn schetsboek.", pv: "tekent" },
         { zin: "Gisteren kocht hij een nieuwe gitaar.", pv: "kocht" },
         { zin: "Vroeger zwom zij elke dag in het zwembad.", pv: "zwom" },
-        { zin: "Elke week bakt zij vers brood voor haar familie.", pv: "bakt" },
-        { zin: "In de haven lagen veel grote schepen.", pv: "lagen" },
-        { zin: "Elke avond belt hij zijn beste vriend.", pv: "belt" },
         { zin: "Gisteren won zij de eerste prijs op school.", pv: "won" },
-        { zin: "Vroeger speelde hij altijd buiten met de buurkinderen.", pv: "speelde" },
-        { zin: "Elke dag loopt de hond een uur in het park.", pv: "loopt" },
-        { zin: "In de keuken bakt papa elke zondag pannenkoeken.", pv: "bakt" },
-        { zin: "Elke nacht slaapt het kind met zijn knuffel.", pv: "slaapt" },
+        { zin: "Vroeger speelde hij buiten met de buurkinderen.", pv: "speelde" },
         { zin: "Gisteren viel zij van haar fiets bij de brug.", pv: "viel" },
         { zin: "Vroeger verdiende hij zijn geld als timmerman.", pv: "verdiende" },
-        { zin: "Elke week wast zij haar haar op vrijdag.", pv: "wast" },
-        { zin: "In de bibliotheek leende hij drie boeken.", pv: "leende" },
-        { zin: "Elke dag hielp hij zijn moeder met de boodschappen.", pv: "hielp" },
+        { zin: "Gisteren leende hij drie boeken in de bibliotheek.", pv: "leende" },
+        { zin: "Gisteren vond hij een munt op de stoep.", pv: "vond" },
+        { zin: "Vroeger fietste papa elke dag naar zijn werk.", pv: "fietste" },
+        { zin: "Vandaag haalt mama de kinderen op.", pv: "haalt" },
+        { zin: "Gisteren sliep het kind de hele middag.", pv: "sliep" },
+        { zin: "Vorig jaar verhuisde het gezin naar Utrecht.", pv: "verhuisde" },
+        { zin: "Gisteren repareerde oom Jan de kapotte fiets.", pv: "repareerde" },
+        { zin: "Vroeger vertelde opa verhalen bij het vuur.", pv: "vertelde" },
+        { zin: "Vandaag helpt mijn broer met verhuizen.", pv: "helpt" },
+        { zin: "Gisteren schreef zij een lang gedicht.", pv: "schreef" },
+        { zin: "Vorig jaar bouwde opa een nieuw tuinhuis.", pv: "bouwde" },
+        { zin: "Gisteren waste mama alle lakens op.", pv: "waste" },
+        { zin: "Vroeger zwom opa elke dag in de rivier.", pv: "zwom" },
+        { zin: "Gisteren tekende hij een stripverhaal voor zijn zusje.", pv: "tekende" },
+        { zin: "Vorig jaar reed zij mee in de wielerwedstrijd.", pv: "reed" },
+        { zin: "Vandaag kookt papa een uitgebreid ontbijt.", pv: "kookt" },
+        { zin: "Gisteren vluchtte de dief snel om de hoek.", pv: "vluchtte" },
+        { zin: "Vroeger graasde de koe op dit veld.", pv: "graasde" },
+        { zin: "Vandaag speelt onze klas de finale.", pv: "speelt" },
+        { zin: "Gisteren won onze school de toneelprijs.", pv: "won" },
+        { zin: "Vorig jaar vierde oma haar tachtigste verjaardag.", pv: "vierde" },
+        { zin: "Gisteren bloeiden de rozen in de tuin.", pv: "bloeiden" },
+        { zin: "Vroeger fietste oma naar de markt.", pv: "fietste" },
+        { zin: "Gisteren sneeuwd het hard in het noorden.", pv: "sneeuwd" },
+        { zin: "Vandaag traint het team voor de bekerfinale.", pv: "traint" },
+        { zin: "Vorig jaar schilderde hij de schuur opnieuw.", pv: "schilderde" },
+        { zin: "Gisteren plukte zij aardbeien in de tuin.", pv: "plukte" },
+        { zin: "Vroeger rende opa de berg op en neer.", pv: "rende" },
+        { zin: "Vandaag zingt het koor in de kerk.", pv: "zingt" },
+        { zin: "Gisteren las opa zijn kleinkinderen voor.", pv: "las" },
+        { zin: "Vorig jaar won zij een gouden medaille.", pv: "won" },
 
-        // Extra zinnen — gemengde PV-positie
-        { zin: "De postbode bracht elke dag veel brieven.", pv: "bracht" },
-        { zin: "Onze buurman zaagt hout in zijn schuur.", pv: "zaagt" },
-        { zin: "Het kleine meisje fluisterde een geheim.", pv: "fluisterde" },
-        { zin: "De scheidsrechter floot voor rust.", pv: "floot" },
-        { zin: "Zijn broer verloor zijn sleutels in de trein.", pv: "verloor" },
-        { zin: "De bakker bakt elke ochtend vers brood.", pv: "bakt" },
-        { zin: "Haar zusje huilde om de kapotte pop.", pv: "huilde" },
-        { zin: "De schilder verfde de muren lichtblauw.", pv: "verfde" },
-        { zin: "Onze hond blafte naar elke fietser.", pv: "blafte" },
-        { zin: "De voetballer schopte de bal in het doel.", pv: "schopte" },
-        { zin: "Het publiek juichte heel luid.", pv: "juichte" },
-        { zin: "De verpleegster gaf de patiënt zijn medicijn.", pv: "gaf" },
-        { zin: "Zijn vader las elke avond de krant.", pv: "las" },
-        { zin: "De zwemmer dook van de hoogste plank.", pv: "dook" },
-        { zin: "Haar moeder naaide een jurk voor het feest.", pv: "naaide" },
-        { zin: "De timmerman bouwde een mooie kast.", pv: "bouwde" },
-        { zin: "Het konijn at de wortels in de tuin op.", pv: "at" },
-        { zin: "De muzikant speelde een mooi stuk op de piano.", pv: "speelde" },
-        { zin: "Zijn oma breide een warme trui.", pv: "breide" },
-        { zin: "De tuinman plantte rozen langs het pad.", pv: "plantte" },
-        { zin: "Het paard galoppeerde over het weiland.", pv: "galoppeerde" },
-        { zin: "De fotograaf maakte een prachtige foto.", pv: "maakte" },
-        { zin: "Haar vader rijdt elke dag naar zijn werk.", pv: "rijdt" },
-        { zin: "De bibliotheekmedewerker hielp het kind zoeken.", pv: "hielp" },
-        { zin: "Het theekopje viel van de tafel.", pv: "viel" },
-        { zin: "De ober bracht de soep naar de tafel.", pv: "bracht" },
-        { zin: "Zijn zusje klom in de grote boom.", pv: "klom" },
-        { zin: "De monteur repareerde de kapotte auto.", pv: "repareerde" },
-        { zin: "Het water kookte al na vijf minuten.", pv: "kookte" },
-        { zin: "De jongen gooide stenen in de vijver.", pv: "gooide" },
-        { zin: "Haar vriendin zong uit volle borst.", pv: "zong" },
-        { zin: "De boom viel om tijdens de storm.", pv: "viel" },
-        { zin: "Zijn moeder kookte elke dag een warme maaltijd.", pv: "kookte" },
-        { zin: "De brandweer bluste het vuur snel.", pv: "bluste" },
-        { zin: "Het kleine jongetje won de sprintrace.", pv: "won" },
-        { zin: "De kat sloop door het hoge gras.", pv: "sloop" },
-        { zin: "Haar broer schreef een lang gedicht.", pv: "schreef" },
-        { zin: "De vlieger steeg hoog in de lucht.", pv: "steeg" },
-        { zin: "Zijn opa vertelde verhalen over de oorlog.", pv: "vertelde" },
-        { zin: "De slager sneed het vlees in mooie stukken.", pv: "sneed" },
-        { zin: "Het ijsje smolt in de zon.", pv: "smolt" },
-        { zin: "De kapper knipte haar haar heel kort.", pv: "knipte" },
-        { zin: "Haar opa wandelde elke dag langs de rivier.", pv: "wandelde" },
-        { zin: "De piloot landde het vliegtuig heel soepel.", pv: "landde" },
-        { zin: "Het publiek stond op en klapte.", pv: "stond" },
-        { zin: "De kat likte haar pootje na het eten.", pv: "likte" },
-        { zin: "Zijn tante bakte pannenkoeken voor de kinderen.", pv: "bakte" },
-        { zin: "De dief vluchtte snel om de hoek.", pv: "vluchtte" },
-        { zin: "Het meisje wreef haar handen warm.", pv: "wreef" },
-        { zin: "De koe graasde rustig op het veld.", pv: "graasde" },
-    ];
+        // === POSITIE 5: PV is het vijfde woord ===
+        { zin: "Elke dag fietst Jan naar zijn werk.", pv: "fietst" },
+        { zin: "Elke avond leest mama een verhaaltje voor.", pv: "leest" },
+        { zin: "Iedere ochtend loopt zij een rondje.", pv: "loopt" },
+        { zin: "Elke week schrijft zij een lange brief.", pv: "schrijft" },
+        { zin: "Elke dag eet hij een boterham met kaas.", pv: "eet" },
+        { zin: "Elke nacht droomt hij over een verre reis.", pv: "droomt" },
+        { zin: "Elke zaterdag helpt zij haar buurvrouw.", pv: "helpt" },
+        { zin: "Elke zondag kookt hij een uitgebreid ontbijt.", pv: "kookt" },
+        { zin: "Elke week bezoekt zij haar zieke tante.", pv: "bezoekt" },
+        { zin: "Elke dag oefent hij op zijn gitaar.", pv: "oefent" },
+        { zin: "Elke morgen zingt zij onder de douche.", pv: "zingt" },
+        { zin: "Elke dag drinkt hij drie koppen koffie.", pv: "drinkt" },
+        { zin: "Elke week bakt zij vers brood thuis.", pv: "bakt" },
+        { zin: "Elke avond belt hij zijn beste vriend.", pv: "belt" },
+        { zin: "Elke dag tekent hij iets in zijn schetsboek.", pv: "tekent" },
+        { zin: "Elke ochtend wast zij haar lange haar.", pv: "wast" },
+        { zin: "Elke dag loopt de hond in het park.", pv: "loopt" },
+        { zin: "Elke nacht slaapt het kind met zijn knuffel.", pv: "slaapt" },
+        { zin: "Elke maand spaart hij wat geld op.", pv: "spaart" },
+        { zin: "Elke dag leest opa de ochtendkrant.", pv: "leest" },
+        { zin: "Elke week zwemt zij een kilometer in het bad.", pv: "zwemt" },
+        { zin: "Elke avond schrijft zij in haar dagboek.", pv: "schrijft" },
+        { zin: "Elke dag werkt hij hard op kantoor.", pv: "werkt" },
+        { zin: "Elke zomer groeit de tuin heel snel.", pv: "groeit" },
+        { zin: "Elke morgen loopt papa naar het station.", pv: "loopt" },
+        { zin: "Elke dag helpt zij haar kleine broertje.", pv: "helpt" },
+        { zin: "Elke week speelt hij gitaar in een band.", pv: "speelt" },
+        { zin: "Elke dag eet de kat zijn bak leeg.", pv: "eet" },
+        { zin: "Elke avond kijkt opa naar het journaal.", pv: "kijkt" },
+        { zin: "Elke dag rijdt hij met de tram naar school.", pv: "rijdt" },
+        { zin: "Elke week traint zij twee keer bij de sportclub.", pv: "traint" },
+        { zin: "Elke ochtend eet hij een bord havermout.", pv: "eet" },
+        { zin: "Elke avond leest zij haar kinderen voor.", pv: "leest" },
+        { zin: "Elke dag klimt hij op zijn mountainbike.", pv: "klimt" },
+        { zin: "Elke zomer fietst opa naar het strand.", pv: "fietst" },
+        { zin: "Elke dag zingt het vogeltje in de boom.", pv: "zingt" },
+        { zin: "Elke avond speelt zij piano voor haar ouders.", pv: "speelt" },
+        { zin: "Elke week ruimt hij zijn kamer netjes op.", pv: "ruimt" },
+        { zin: "Elke dag wandelt oma door het stadspark.", pv: "wandelt" },
+        { zin: "Elke avond bakt papa een lekker toetje.", pv: "bakt" },
+        { zin: "Elke dag fietst zij naar haar vriendin.", pv: "fietst" },
+        { zin: "Elke week koopt oma verse bloemen op de markt.", pv: "koopt" },
+        { zin: "Elke dag draagt hij zijn favoriete pet.", pv: "draagt" },
+        { zin: "Elke ochtend drinkt zij een glas sinaasappelsap.", pv: "drinkt" },
+        { zin: "Elke avond poetst hij zorgvuldig zijn tanden.", pv: "poetst" },
+        { zin: "Elke dag zoekt de kat een warm plekje.", pv: "zoekt" },
+        { zin: "Elke week ontvangt zij een brief van haar vriend.", pv: "ontvangt" },
+        { zin: "Elke dag springt hij op zijn trampoline.", pv: "springt" },
+        { zin: "Elke maand bezoekt hij het museum in de stad.", pv: "bezoekt" },
+        { zin: "Elke avond voedt zij de vissen in het aquarium.", pv: "voedt" },
+    ];    ];
 
     // Shuffle functie (Fisher-Yates)
     function shuffle(arr) {
@@ -860,7 +861,9 @@
         const inp = document.getElementById('antwoordInput');
         inp.value = '';
         inp.disabled = false;
-        inp.focus();
+        inp.className = 'text-input';
+        // Focus alleen op niet-touch apparaten (voorkomt problemen op iOS)
+        if (!('ontouchstart' in window)) inp.focus();
         bezig = false;
     }
 
@@ -941,7 +944,6 @@
     // HINT
     // ============================================================
     function showHint() {
-        document.getElementById('hintAntwoord').textContent = oefeningen[huidigIndex].pv;
         document.getElementById('modalHint').classList.remove('hidden');
     }
 
@@ -978,12 +980,38 @@
     }
 
     // ============================================================
-    // ENTER
+    // INPUT EVENTS — werkt op desktop (keydown) én mobiel (keyup)
     // ============================================================
-    document.getElementById('antwoordInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') controleer();
+    const inp = document.getElementById('antwoordInput');
+
+    // Desktop: Enter via keydown
+    inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            controleer();
+        }
     });
 
+    // Mobiel: Enter via keyup (iOS/Android)
+    inp.addEventListener('keyup', e => {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            e.preventDefault();
+            controleer();
+        }
+    });
+
+    // Knop: ook touchend voor iOS
+    document.getElementById('checkBtn').addEventListener('touchend', e => {
+        e.preventDefault();
+        controleer();
+    });
+
+    document.getElementById('hintBtn').addEventListener('touchend', e => {
+        e.preventDefault();
+        showHint();
+    });
+
+    // Hint modal sluiten met Enter
     document.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
             if (!document.getElementById('modalHint').classList.contains('hidden')) {
