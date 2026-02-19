@@ -858,12 +858,12 @@
     function laadOefening(index) {
         if (index >= oefeningen.length) { toonEindscherm(); return; }
         document.getElementById('questionSentence').textContent = oefeningen[index].zin;
-        const inp = document.getElementById('antwoordInput');
-        inp.value = '';
-        inp.disabled = false;
-        inp.className = 'text-input';
+        const antwoordEl = document.getElementById('antwoordInput');
+        antwoordEl.value = '';
+        antwoordEl.disabled = false;
+        antwoordEl.className = 'text-input';
         // Focus alleen op niet-touch apparaten (voorkomt problemen op iOS)
-        if (!('ontouchstart' in window)) inp.focus();
+        if (!('ontouchstart' in window)) antwoordEl.focus();
         bezig = false;
     }
 
@@ -894,13 +894,13 @@
         if (bezig) return;
         if (!document.getElementById('modalHint').classList.contains('hidden')) return;
 
-        const inp    = document.getElementById('antwoordInput');
-        const invoer = inp.value.trim().toLowerCase();
+        const antwoordEl2 = document.getElementById('antwoordInput');
+        const invoer = antwoordEl2.value.trim().toLowerCase();
         const juist  = oefeningen[huidigIndex].pv.toLowerCase();
         if (!invoer) return;
 
         bezig = true;
-        inp.disabled = true;
+        antwoordEl2.disabled = true;
 
         if (invoer === juist) {
             aantalGoed++;
@@ -982,10 +982,10 @@
     // ============================================================
     // INPUT EVENTS — werkt op desktop (keydown) én mobiel (keyup)
     // ============================================================
-    const inp = document.getElementById('antwoordInput');
+    const antwoordInp = document.getElementById('antwoordInput');
 
     // Desktop: Enter via keydown
-    inp.addEventListener('keydown', e => {
+    antwoordInp.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             controleer();
@@ -993,7 +993,7 @@
     });
 
     // Mobiel: Enter via keyup (iOS/Android)
-    inp.addEventListener('keyup', e => {
+    antwoordInp.addEventListener('keyup', function(e) {
         if (e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
             controleer();
@@ -1001,23 +1001,20 @@
     });
 
     // Knop: ook touchend voor iOS
-    document.getElementById('checkBtn').addEventListener('touchend', e => {
+    document.getElementById('checkBtn').addEventListener('touchend', function(e) {
         e.preventDefault();
         controleer();
     });
 
-    document.getElementById('hintBtn').addEventListener('touchend', e => {
+    document.getElementById('hintBtn').addEventListener('touchend', function(e) {
         e.preventDefault();
         showHint();
     });
 
-    // Hint modal sluiten met Enter
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-            if (!document.getElementById('modalHint').classList.contains('hidden')) {
-                sluitHint();
-            }
-        }
+    // Hint modal OK knop touchend
+    document.querySelector('.btn-ok').addEventListener('touchend', function(e) {
+        e.preventDefault();
+        sluitHint();
     });
 
     // ============================================================
