@@ -855,6 +855,7 @@
         el.disabled = false;
         el.className = 'text-input';
         bezig = false;
+        setTimeout(function() { el.focus(); }, 50);
     }
 
     function controleer() {
